@@ -36,7 +36,13 @@ Sub printCGAChar (c As String, x As Integer, y As Integer)
   col = charcode Mod 16
 
   ' dest first, then src
+  ' Compared to QB64, QBJS excludes the end of range,
+  ' e.g. 0..8 would have the actual range of 0..7
+$if WEB then
+  _PutImage (x, y)-(x + 8, y + 8), imgCGAFont, , (col * 8, row * 8)-((col + 1) * 8, (row + 1) * 8)
+$else
   _PutImage (x, y)-(x + 7, y + 7), imgCGAFont, , (col * 8, row * 8)-((col + 1) * 8 - 1, (row + 1) * 8 - 1)
+$endif
 End Sub
 
 Sub printCGA (text As String, x As Integer, y As Integer)
