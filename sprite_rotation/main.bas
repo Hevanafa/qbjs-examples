@@ -21,7 +21,17 @@ _PrintMode _KeepBackground
 ' Begin draw
 Cls , &HFF6495ED
 
-_PutImage (10, 10), imgRadioactive
+$if javascript
+function rotate45() {
+  const imgRad = QB.getImage(imgRadioactive);
+  const dest = QB.getImage(surface);
+  const ctx = dest.getContext("2d");
+
+  ctx.drawImage(imgRad, 10, 10);
+}
+
+rotate45();
+$endif
 
 ' Flush
 _PutImage , surface, scaled
