@@ -2,10 +2,10 @@ Const surfaceWidth = 320
 Const surfaceHeight = 200
 Const displayScale = 2
 
-dim as long surface, scaled
-dim shared as long imgCGAFont
+Dim As Long surface, scaled
+Dim Shared As Long imgCGAFont
 
-imgCGAFont = _loadimage("CGA8x8thin.png")
+imgCGAFont = _LoadImage("CGA8x8thin.png")
 
 surface = _NewImage(surfaceWidth, surfaceHeight, 32)
 scaled = _NewImage(surfaceWidth * displayScale, surfaceHeight * displayScale, 32)
@@ -15,41 +15,41 @@ _Dest surface
 _Delay 0.1
 _Display
 
-cls , &hFF6495ED
+Cls , &HFF6495ED
 
-_putimage (160, 10), imgCGAFont
+_PutImage (160, 10), imgCGAFont
 
 printCGAChar "@", 10, 10
 printCGAChar "z", 30, 10
 printCGA "Hello from QBJS!", 10, 30
 
-_putimage , surface, scaled
-_display
+_PutImage , surface, scaled
+_Display
 
 
-sub printCGAChar(c as string, x as integer, y as integer)
-  dim as integer charcode
-  dim as integer row, col
+Sub printCGAChar (c As String, x As Integer, y As Integer)
+  Dim As Integer charcode
+  Dim As Integer row, col
 
-  charcode = asc(c)
+  charcode = Asc(c)
   row = charcode \ 16
-  col = charcode mod 16
+  col = charcode Mod 16
 
   ' dest first, then src
-  _putimage (x, y)-(x + 7, y + 7), imgCGAFont, , (col * 8, row * 8)-((col + 1) * 8 - 1, (row + 1) * 8 - 1)
-end sub
+  _PutImage (x, y)-(x + 7, y + 7), imgCGAFont, , (col * 8, row * 8)-((col + 1) * 8 - 1, (row + 1) * 8 - 1)
+End Sub
 
-sub printCGA(text as string, x as integer, y as integer)
-  dim as integer left, a
-  dim as string c
+Sub printCGA (text As String, x As Integer, y As Integer)
+  Dim As Integer left, a
+  Dim As String c
 
-  if text = "" then exit sub
+  If text = "" Then Exit Sub
 
   left = x
 
-  for a = 1 to len(text)
-    c = mid$(text, a, 1)
+  For a = 1 To Len(text)
+    c = Mid$(text, a, 1)
     printCGAChar c, left, y
     left = left + 8
-  next
-end sub
+  Next
+End Sub
