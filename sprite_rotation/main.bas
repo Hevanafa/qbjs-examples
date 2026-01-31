@@ -22,14 +22,23 @@ _Display
 
 _PrintMode _KeepBackground
 
+dim t as long
+t = 0
+
 ' Begin draw
-Cls , &HFF6495ED
+do
+  _limit 60
 
-RotateImage imgRadioactive, 120, 80, 45 * _pi / 180
+  Cls , &HFF6495ED
 
-' Flush
-_PutImage , surface, scaled
-_Display
+  RotateImage imgRadioactive, 120, 80, (t * 2) * _pi / 180
+
+  t=t+1
+
+  ' Flush
+  _PutImage , surface, scaled
+  _Display
+loop until _keydown(27)
 
 
 ' angle is in radians
