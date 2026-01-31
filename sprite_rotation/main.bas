@@ -25,24 +25,30 @@ _PrintMode _KeepBackground
 ' Begin draw
 Cls , &HFF6495ED
 
-$if javascript
-function rotate45() {
-  const imgRad = QB.getImage(imgRadioactive);
-  const dest = QB.getImage(surface);
-  const ctx = dest.getContext("2d");
-
-  ctx.save();
-
-    ctx.translate(120 + imgRad.width / 2, 80 + imgRad.height / 2);
-    ctx.rotate(45 * Math.PI / 180);  // angle is in radians
-    ctx.drawImage(imgRad, -imgRad.width / 2, -imgRad.height / 2);
-
-  ctx.restore();
-}
-
-rotate45();
-$endif
+RotateImage imgRadioactive, 120, 80, 45 * _pi / 180
 
 ' Flush
 _PutImage , surface, scaled
 _Display
+
+
+' angle is in radians
+sub RotateImage(imgHandle as long, x as integer, y as integer, angle as double)
+  dim destHandle as long
+  destHandle = _dest
+
+$if javascript
+  const srcImg = QB.getImage(imgHandle);
+  const dest = QB.getImage(destHandle);
+  const ctx = dest.getContext("2d");
+
+  ctx.save();
+
+    ctx.translate(x + srcImg.width / 2, y + srcImg.height / 2);
+    ctx.rotate(angle);
+    ctx.drawImage(srcImg, -srcImg.width / 2, -srcImg.height / 2);
+
+  ctx.restore();
+$endif
+
+end sub
