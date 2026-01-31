@@ -1,13 +1,13 @@
-dim as long surface, scaled
-surface = _newimage(320, 200, 32)
-scaled = _newimage(320 * 3, 200 * 3, 32)
+Dim As Long surface, scaled
+surface = _NewImage(320, 200, 32)
+scaled = _NewImage(320 * 3, 200 * 3, 32)
 
-screen scaled
-_dest surface
-_delay 0.1
-_display
+Screen scaled
+_Dest surface
+_Delay 0.1
+_Display
 
-cls , &hFF6495ED
+Cls , &HFF6495ED
 
-_putimage , surface, scaled
-_display
+_PutImage , surface, scaled
+_Display
