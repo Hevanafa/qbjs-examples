@@ -20,7 +20,8 @@ cls , &hFF6495ED
 _putimage (160, 10), imgCGAFont
 
 printCGAChar "@", 10, 10
-printCGAChar "z", 30, 30
+printCGAChar "z", 30, 10
+printCGA "Hello from QBJS!", 10, 30
 
 _putimage , surface, scaled
 _display
@@ -36,4 +37,19 @@ sub printCGAChar(c as string, x as integer, y as integer)
 
   ' dest first, then src
   _putimage (x, y)-(x + 7, y + 7), imgCGAFont, , (col * 8, row * 8)-((col + 1) * 8 - 1, (row + 1) * 8 - 1)
+end sub
+
+sub printCGA(text as string, x as integer, y as integer)
+  dim as integer left, a
+  dim as string c
+
+  if text = "" then exit sub
+
+  left = x
+
+  for a = 1 to len(text)
+    c = mid$(text, a, 1)
+    printCGAChar c, left, y
+    left = left + 8
+  next
 end sub
