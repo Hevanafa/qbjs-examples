@@ -22,16 +22,27 @@ _PrintMode _KeepBackground
 Cls , &HFF6495ED
 
 _PutImage (10, 10), imgRadioactive
+TintSolid imgRadioactive, &hFFFFFFFF
+_putimage (50, 10), imgRadioactive
 
 ' Flush
 _PutImage , surface, scaled
 _Display
 
-sub TintImage(imgHandle as long, newColour as _unsigned long)
+sub TintSolid(imgHandle as long, colour as _unsigned long)
   dim as integer a, b
+  dim as long lastSource, lastDest
+
+  lastSource = _source
+  lastDest = _dest
+  _source imgHandle
+  _dest imgHandle
 
   for b=0 to _height(imgHandle)
   for a=0 to _width(imgHandle)
-
+    if _alpha(point(a, b)) = &hFF then pset (a, b), colour
   next a, b
+
+  _source lastSource
+  _dest lastDest
 end sub
