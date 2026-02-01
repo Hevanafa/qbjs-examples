@@ -1,11 +1,19 @@
+import Console from "lib\web\console.bas"
+
+option _explicit
+
 Const surfaceWidth = 240
 Const surfaceHeight = 160
 Const displayScale = 3
 
 Dim As Long surface, scaled
-Dim As Long imgRadioactive
+Dim As Long imgRadioactive, imgTinted, imgTinted2
 
 imgRadioactive = _LoadImage("radioactive.png")
+imgTinted = _CopyImage(imgRadioactive)
+imgTinted2 = _CopyImage(imgRadioactive)
+
+console.log "What is imgTinted2? " + imgTinted2
 
 ' Init scaled display
 surface = _NewImage(surfaceWidth, surfaceHeight, 32)
@@ -22,8 +30,12 @@ _PrintMode _KeepBackground
 Cls , &HFF6495ED
 
 _PutImage (10, 10), imgRadioactive
-TintSolid imgRadioactive, &hFFFFFFFF
-_putimage (50, 10), imgRadioactive
+
+TintSolid imgTinted, &hFFFFFFFF
+TintBlend imgTinted2, &h80FF5555
+
+_putimage (50, 10), imgTinted
+_putimage (100, 10), imgTinted2
 
 ' Flush
 _PutImage , surface, scaled
@@ -47,12 +59,13 @@ sub TintSolid(imgHandle as long, colour as _unsigned long)
   _dest lastDest
 end sub
 
+
 sub TintBlend(imgHandle as long, colour as _unsigned long)
   dim as long lastSource, lastDest
   dim as long destHandle
 
   if _alpha(colour) = &hFF then 
-    TintSolid imgHandle colour
+    TintSolid imgHandle, colour
     exit sub
   end if
 
@@ -81,4 +94,7 @@ $if javascript
   // Restore default composite mode
   ctx.globalCompositeOperation = "source-over";
 $endif
+
+  _source lastSource
+  _dest lastDest
 end sub
