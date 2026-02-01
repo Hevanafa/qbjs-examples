@@ -46,3 +46,39 @@ sub TintSolid(imgHandle as long, colour as _unsigned long)
   _source lastSource
   _dest lastDest
 end sub
+
+sub TintBlend(imgHandle as long, colour as _unsigned long)
+  dim as long lastSource, lastDest
+  dim as long destHandle
+
+  if _alpha(colour) = &hFF then 
+    TintSolid imgHandle colour
+    exit sub
+  end if
+
+  lastSource = _source
+  lastDest = _dest
+  _source imgHandle
+  _dest imgHandle
+
+  destHandle = _dest
+
+$if javascript
+  const img = QB.getImage(destHandle);
+  const ctx = img.getContext("2d");
+
+  // >>> is the "unsigned shift right" operator
+  const
+    a = (colour >>> 24) & 0xFF,
+    r = (colour >>> 16) & 0xFF,
+    g = (colour >>> 8) & 0xFF,
+    b = colour & 0xFF;
+
+  ctx.globalCompositeOperation = "source-atop";
+  ctx.fillStyle = "rgba(" + [r, g, b, a / 255].join(", ") + ")";
+  ctx.fillRect(0, 0, img.width, img.height);
+
+  // Restore default composite mode
+  ctx.globalCompositeOperation = "source-over";
+$endif
+end sub
